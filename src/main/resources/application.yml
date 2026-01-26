@@ -1,9 +1,13 @@
 spring:
-  datasource:
-    url: jdbc:postgresql://userdb:5432/user_management
-    username: user
-    password: password
-    driver-class-name: org.postgresql.Driver
+
+  flyway:
+    enabled: false
+
+#  datasource:
+#    url: jdbc:postgresql://userdb:5432/user_management
+#    username: user
+#    password: password
+#    driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
