@@ -1,4 +1,4 @@
-package com.wellu.usermanagement.entity;
+package com.wellu.usermanagement.enumeration;
 
 public enum UserStatus {
     ACTIVE,

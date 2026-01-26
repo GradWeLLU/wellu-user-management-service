@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   userdb:
-    image: postgres:15.4
+    image: postgres:14.11
     container_name: user_management
     environment:
       POSTGRES_USER: user

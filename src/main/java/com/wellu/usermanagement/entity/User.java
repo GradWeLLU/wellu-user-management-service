@@ -1,12 +1,13 @@
 package com.wellu.usermanagement.entity;
 
+import com.wellu.usermanagement.enumeration.UserRole;
+import com.wellu.usermanagement.enumeration.UserStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import jakarta.validation.constraints.Email;
 
 import java.time.Instant;
-import java.util.Date;
 import java.util.UUID;
 
 @Entity
