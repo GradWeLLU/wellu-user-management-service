@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import jakarta.validation.constraints.Email;
 
+import java.lang.module.FindException;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -55,11 +56,15 @@ public class User {
     @Email
     private String email;
 
-    @Column(nullable = false)
+    @Column
     private Instant lastLogin;
 
-    // need a profile class
-    //private String profile
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = true, orphanRemoval = true)
+    @JoinColumn(
+            name = "profile_id",
+            unique = true
+    )
+    private UserProfile profile;
 
     @PrePersist
     protected void onCreate(){
@@ -70,6 +75,13 @@ public class User {
     @PreUpdate
     protected void onUpdate(){
         this.updatedAt = Instant.now();
+    }
+
+    public void setProfile(UserProfile profile){
+        this.profile = profile;
+        if(profile != null){
+            profile.setUser(this);
+        }
     }
 
 }
