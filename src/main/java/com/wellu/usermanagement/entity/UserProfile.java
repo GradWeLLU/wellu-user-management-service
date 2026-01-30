@@ -32,7 +32,14 @@ public class UserProfile {
     @OneToOne(mappedBy = "profile")
     private User user;
 
-    //Still need health profile, goals, and badges
+    @OneToOne(
+            mappedBy = "userProfile",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private HealthProfile healthProfile;
+
+    //Still need goals, and badges
 
     protected void setUser(User user){
         this.user = user;
