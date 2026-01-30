@@ -1,9 +1,12 @@
 package com.wellu.usermanagement.entity;
 
+import com.wellu.usermanagement.enumeration.UserRole;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -39,7 +42,14 @@ public class UserProfile {
     )
     private HealthProfile healthProfile;
 
-    //Still need goals, and badges
+    @OneToMany(mappedBy = "userProfile", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Badge> badges=new ArrayList<>();
+
+    @OneToMany(mappedBy = "userProfile", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Goal> goals = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userProfile", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProgressEntry> progressEntries = new ArrayList<>();
 
     protected void setUser(User user){
         this.user = user;
