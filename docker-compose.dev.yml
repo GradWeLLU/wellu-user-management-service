@@ -1,0 +1,12 @@
+services:
+  user-management-service:
+    image: maven:3.9.12-eclipse-temurin-21
+    volumes:
+      - .:/app
+      - ~/.m2:/root/.m2
+    working_dir: /app
+    command: mvn spring-boot:run
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://userdb:5432/user_management
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
