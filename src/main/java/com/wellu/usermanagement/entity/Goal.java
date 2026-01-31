@@ -35,10 +35,10 @@ public class Goal {
     private Double currentValue;
 
     @Column(name = "start_date", nullable = false)
-    private LocalDate startDate;
+    private Instant startDate;
 
     @Column(name = "end_date", nullable = false)
-    private LocalDate endDate;
+    private Instant endDate;
 
     @Column(name = "is_completed", nullable = false)
     private Boolean isCompleted = false;
