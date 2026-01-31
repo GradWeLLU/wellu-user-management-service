@@ -6,20 +6,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="bagde")
+@Table(name="badges")
 public class Badge {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "badge_id", nullable = false)
-    private Long id;
+    @Column(name = "id", nullable = false)
+    private UUID id;
 
     @Column(name = "badge_name", nullable = false)
     private String name;
@@ -27,14 +29,14 @@ public class Badge {
     @Column(name = "badge_description", nullable = false)
     private String description;
 
-    @Column(name = "badge_imageURL", nullable = false)
+    @Column(name = "badge_image_URL", nullable = false)
     private String imageURL;
 
-    @Column(name = "date_earned",nullable = false)
-    private LocalDate dateEarned;
+    @Column(name = "earned_at",nullable = false)
+    private Instant earnedAt;
 
     @ManyToOne
-    @JoinColumn(name = "id",nullable = false)
+    @JoinColumn(name = "user_profile_id",nullable = false)
     private UserProfile userProfile;
 
 

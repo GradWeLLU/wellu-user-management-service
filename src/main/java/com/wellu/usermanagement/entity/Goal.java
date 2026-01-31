@@ -8,19 +8,21 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.context.annotation.Profile;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="goal")
+@Table(name="goals")
 public class Goal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="goal_id")
-    private Long id;
+    @Column(name="id")
+    private UUID id;
 
     @Enumerated(EnumType.STRING)
     @Column(name="goal_type", nullable = false)
@@ -42,7 +44,7 @@ public class Goal {
     private Boolean isCompleted = false;
 
     @ManyToOne
-    @JoinColumn(name = "profile_id", nullable = false)
+    @JoinColumn(name = "user_profile_id", nullable = false)
     private UserProfile userProfile;
 
     public void updateCurrentValue(double value) {

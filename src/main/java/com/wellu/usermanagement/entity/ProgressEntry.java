@@ -7,19 +7,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="progress_entry")
+@Table(name="progress_entries")
 public class ProgressEntry {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="progress_entry_id")
-    private Long id;
+    @Column(name="id")
+    private UUID id;
 
     @Column(name = "weight", nullable = false)
     private Double weight;
@@ -35,10 +37,10 @@ public class ProgressEntry {
 
 
     @Column(name = "recorded_at", nullable = false)
-    private LocalDate recordedAt;
+    private Instant recordedAt;
 
     @ManyToOne
-    @JoinColumn(name = "profiles", nullable = false)
+    @JoinColumn(name = "user_profile_id", nullable = false)
     private UserProfile userProfile;
 
 

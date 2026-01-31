@@ -1,0 +1,2 @@
+ALTER TABLE allergies
+    ADD COLUMN level VARCHAR(50) NOT NULL;

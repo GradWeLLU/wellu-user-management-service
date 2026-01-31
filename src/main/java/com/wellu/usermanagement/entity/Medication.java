@@ -25,7 +25,7 @@ public class Medication {
 
     @Column(nullable = false)
     @Positive
-    private double dosage;
+    private Double dosage;
 
     @Column(nullable = false)
     @Positive

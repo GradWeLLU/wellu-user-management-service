@@ -15,35 +15,34 @@ import java.util.UUID;
 public class Injury {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(nullable = false, unique = true, updatable = false)
+    @Column(name="id",nullable = false, unique = true, updatable = false)
     private UUID id;
 
-    @Column(nullable = false)
+    @Column(name="name",nullable = false)
     private String name;
 
-    @Lob
-    @Column(nullable = false)
+    @Column(name="description",nullable = false)
     private String description;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private SeverityLevel level;
+    @Column(name="severity_level",nullable = false)
+    private SeverityLevel severityLevel;
 
-    @Column
+    @Column(name="start_date")
     private Instant startDate;
 
-    @Column
+    @Column(name="end_date")
     private Instant endDate;
 
-    @Column(nullable = false)
-    private boolean chronic;
+    @Column(name="is_chronic",nullable = false)
+    private boolean isChronic;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "health_profile_id", nullable = false)
     private HealthProfile healthProfile;
 
     public void updateSeverityLevel(SeverityLevel level){
-        this.level = level;
+        this.severityLevel = level;
     }
 
     void setHealthProfile(HealthProfile profile){

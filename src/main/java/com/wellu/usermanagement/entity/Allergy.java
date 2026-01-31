@@ -20,12 +20,12 @@ public class Allergy {
     @Column(nullable = false, length = 100)
     private String name;
 
-    @Lob
+//    @Lob
     @Column(nullable = true)
     private String description;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name="severity_level",nullable = false)
     private SeverityLevel severityLevel;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
