@@ -39,6 +39,4 @@ public class Badge {
     @JoinColumn(name = "user_profile_id",nullable = false)
     private UserProfile userProfile;
 
-
-
 }
