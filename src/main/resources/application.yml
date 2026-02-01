@@ -4,11 +4,11 @@ spring:
     enabled: true
 
 
-#  datasource:
-#    url: jdbc:postgresql://userdb:5432/user_management
-#    username: user
-#    password: password
-#    driver-class-name: org.postgresql.Driver
+  #datasource:
+   # url: jdbc:postgresql://userdb:5432/user_management
+   # username: user
+   # password: password
+   # driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
@@ -17,3 +17,4 @@ spring:
 
 server:
   port: 8081
+

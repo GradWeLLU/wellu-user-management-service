@@ -1,0 +1,20 @@
+spring:
+
+  flyway:
+    enabled: true
+
+
+  datasource:
+     url: jdbc:postgresql://userdb:5432/user_management
+     username: user
+     password: password
+     driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+server:
+  port: 8081
+
