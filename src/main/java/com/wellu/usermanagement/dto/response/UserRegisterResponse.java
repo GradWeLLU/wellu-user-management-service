@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
-@AllArgsConstructor
-public class UserRegisterResponse {
-    private String message;
-}
+
+public record UserRegisterResponse (
+     String message
+){}
