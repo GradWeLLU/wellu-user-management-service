@@ -10,6 +10,7 @@ import org.mapstruct.Mapping;
 public interface InjuryMapper {
 
     // Request DTO → Entity
+    @Mapping(target = "id", ignore = true)
     Injury toEntity(InjuryRequestDto dto);
 
     // Entity → Response DTO

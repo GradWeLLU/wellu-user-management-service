@@ -5,12 +5,14 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.Instant;
 import java.util.UUID;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "medications")
 public class Medication {
@@ -42,7 +44,7 @@ public class Medication {
     private HealthProfile healthProfile;
 
 
-    void setHealthProfile(HealthProfile profile){
+    public void setHealthProfile(HealthProfile profile){
         this.healthProfile = profile;
     }
 
