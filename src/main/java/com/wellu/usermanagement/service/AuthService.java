@@ -3,6 +3,7 @@ package com.wellu.usermanagement.service;
 import com.wellu.usermanagement.dto.request.UserLoginRequest;
 import com.wellu.usermanagement.entity.User;
 import com.wellu.usermanagement.repository.UserRepository;
+import com.wellu.usermanagement.security.JwtService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
