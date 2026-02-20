@@ -39,8 +39,8 @@ public class UserController {
     public ResponseEntity<LoginResponse> login(
             @RequestBody UserLoginRequest request
     ) {
-        String token = authService.login(request);
-        return ResponseEntity.ok(new LoginResponse(token));
+//        String token = authService.login(request);
+        return authService.login(request);
     }
 
 }

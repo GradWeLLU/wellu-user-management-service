@@ -25,22 +25,16 @@ public class UserService {
     }
 
     public ResponseEntity<UserRegisterResponse> register(UserRegisterRequest userRegisterRequest) {
-        try{
-            String userEmail=userRegisterRequest.email();
-            validateEmailNotTaken(userEmail);
-            saveUser(userRegisterRequest);
+        String userEmail=userRegisterRequest.email();
+        validateEmailNotTaken(userEmail);
+        saveUser(userRegisterRequest);
 
-            UserRegisterResponse response =
-                    new UserRegisterResponse("User registered successfully");
+        UserRegisterResponse response =
+                new UserRegisterResponse("User registered successfully");
 
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body(response);
-        }
-        catch (Exception e){
-            throw new RegisterException("Unexpected error occurred");
-
-        }
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
     }
 
     private void saveUser(UserRegisterRequest userRegisterRequest) {
