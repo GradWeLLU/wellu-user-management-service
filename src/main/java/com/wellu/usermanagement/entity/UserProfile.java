@@ -1,9 +1,9 @@
 package com.wellu.usermanagement.entity;
 
-import com.wellu.usermanagement.enumeration.UserRole;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +11,7 @@ import java.util.UUID;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "profiles")
 public class UserProfile {
@@ -28,6 +29,7 @@ public class UserProfile {
     @Column
     private double height;
 
+    //TODO: remove bmi hee and from db
     // probably best to compute this instead of storing it
     @Column
     private double BMI;

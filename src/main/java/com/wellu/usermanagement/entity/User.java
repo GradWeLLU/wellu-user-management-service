@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import jakarta.validation.constraints.Email;
 import lombok.Setter;
-
-import java.lang.module.FindException;
 import java.time.Instant;
 import java.util.UUID;
 

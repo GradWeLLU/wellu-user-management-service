@@ -3,6 +3,7 @@ package com.wellu.usermanagement.service;
 import com.wellu.usermanagement.dto.request.UserRegisterRequest;
 import com.wellu.usermanagement.dto.response.UserRegisterResponse;
 import com.wellu.usermanagement.entity.User;
+import com.wellu.usermanagement.entity.UserProfile;
 import com.wellu.usermanagement.exception.RegisterException;
 import com.wellu.usermanagement.mapper.UserMapper;
 import com.wellu.usermanagement.repository.UserRepository;
@@ -24,27 +25,23 @@ public class UserService {
     }
 
     public ResponseEntity<UserRegisterResponse> register(UserRegisterRequest userRegisterRequest) {
-        try{
-            String userEmail=userRegisterRequest.email();
-            validateEmailNotTaken(userEmail);
-            saveUser(userRegisterRequest);
+        String userEmail=userRegisterRequest.email();
+        validateEmailNotTaken(userEmail);
+        saveUser(userRegisterRequest);
 
-            UserRegisterResponse response =
-                    new UserRegisterResponse("User registered successfully");
+        UserRegisterResponse response =
+                new UserRegisterResponse("User registered successfully");
 
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body(response);
-        }
-        catch (Exception e){
-            throw new RegisterException("Unexpected error occurred");
-
-        }
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
     }
 
     private void saveUser(UserRegisterRequest userRegisterRequest) {
         User user = userMapper.toUserEntity(userRegisterRequest);
         user.setPassword(passwordEncoder.encode(userRegisterRequest.password()));
+        UserProfile userProfile = new UserProfile();
+        user.setProfile(userProfile);
         userRepository.save(user);
     }
 

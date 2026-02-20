@@ -1,0 +1,31 @@
+package com.wellu.usermanagement.controller;
+
+
+import com.wellu.usermanagement.dto.response.UserProfileResponse;
+import com.wellu.usermanagement.service.ProfileService;
+import com.wellu.usermanagement.service.UserService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/profile")
+public class ProfileController {
+    private final UserService userService;
+    private final ProfileService profileService;
+
+    public ProfileController(UserService userService, ProfileService profileService) {
+        this.userService = userService;
+        this.profileService = profileService;
+    }
+
+
+    @GetMapping("/me")
+    public ResponseEntity<UserProfileResponse> getProfile() {
+        return profileService.getProfile();
+    }
+
+
+
+}
