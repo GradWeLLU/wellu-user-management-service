@@ -4,11 +4,13 @@ import com.wellu.usermanagement.enumeration.SeverityLevel;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.UUID;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "allergies")
 public class Allergy {
@@ -32,11 +34,11 @@ public class Allergy {
     @JoinColumn(name = "health_profile_id", nullable = false)
     private HealthProfile healthProfile;
 
-    void updateSeverityLevel(SeverityLevel level){
+    public void updateSeverityLevel(SeverityLevel level){
         this.severityLevel = level;
     }
 
-    void setHealthProfile(HealthProfile profile){
+    public void setHealthProfile(HealthProfile profile){
         this.healthProfile = profile;
     }
 }

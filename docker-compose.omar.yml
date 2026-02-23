@@ -1,5 +1,4 @@
 services:
-
   userdb:
     image: postgres:14.11
     container_name: user_management
@@ -23,12 +22,16 @@ services:
     container_name: user-management-service
     env_file:
       - .env
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_DATASOURCE_URL: jdbc:postgresql://userdb:5432/user_management
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
     ports:
       - "8081:8081"
     depends_on:
       userdb:
         condition: service_healthy
-
 
 volumes:
   postgres-data:
