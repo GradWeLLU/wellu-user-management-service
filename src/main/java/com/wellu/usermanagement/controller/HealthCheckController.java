@@ -9,4 +9,10 @@ public class HealthCheckController {
     public String health(){
         return "ok kokomama";
     }
+
+    @GetMapping("/okay")
+    public String okay(){
+        return "okay!";
+    }
 }
+
