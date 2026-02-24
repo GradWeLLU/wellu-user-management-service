@@ -4,7 +4,6 @@ import com.wellu.usermanagement.dto.request.GoalRequest;
 import com.wellu.usermanagement.dto.response.GoalResponse;
 import com.wellu.usermanagement.entity.Goal;
 import com.wellu.usermanagement.entity.UserProfile;
-import com.wellu.usermanagement.exception.GoalConflictException;
 import com.wellu.usermanagement.exception.InvalidGoalDateException;
 import com.wellu.usermanagement.exception.ProfileNotFoundException;
 import com.wellu.usermanagement.mapper.GoalMapper;
@@ -53,7 +52,6 @@ public class GoalService {
                 .findByUserId(userId)
                 .orElseThrow(() -> new ProfileNotFoundException("Profile not found"));
 
-        validateNoOverlappingGoals(profile.getId(), request);
         validateDateRange(request.startDate(), request.endDate());
 
         Goal goal = goalMapper.toEntity(request);
@@ -89,19 +87,4 @@ public class GoalService {
 
     }
 
-    private void validateNoOverlappingGoals(UUID profileId, GoalRequest request) {
-
-        List<Goal> overlapping = goalRepository.findOverlappingActiveGoals(
-                profileId,
-                request.type(),
-                request.startDate(),
-                request.endDate()
-        );
-
-        if (!overlapping.isEmpty()) {
-            throw new GoalConflictException(
-                    "An active goal of this type already exists in the given date range"
-            );
-        }
-    }
 }

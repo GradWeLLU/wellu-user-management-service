@@ -1,12 +1,13 @@
 package com.wellu.usermanagement.exception;
 
-import jakarta.servlet.http.HttpServletRequest;
+import com.wellu.usermanagement.enumeration.GoalType;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Instant;
+
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -62,12 +63,50 @@ public class GlobalExceptionHandler {
         );
     }
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ApiError> handleInvalidDate(HttpMessageNotReadableException ex) {
+    public ResponseEntity<ApiError> handleInvalidInput(HttpMessageNotReadableException ex) {
 
-        return new ResponseEntity<>(
-                new ApiError(400, "Invalid date format. Use yyyy-MM-dd"),
-                HttpStatus.BAD_REQUEST
+        Throwable cause = ex.getCause();
+
+        if (cause instanceof com.fasterxml.jackson.databind.exc.InvalidFormatException ife) {
+
+            Class<?> targetType = ife.getTargetType();
+
+            if (targetType.equals(GoalType.class)) {
+                return ResponseEntity.badRequest().body(
+                        new ApiError(400, "Invalid goal type.")
+                );
+            }
+
+            if (targetType.equals(java.time.LocalDate.class)) {
+                return ResponseEntity.badRequest().body(
+                        new ApiError(400, "Invalid date format. Use yyyy-MM-dd.")
+                );
+            }
+
+            if (targetType.equals(Double.class)) {
+                return ResponseEntity.badRequest().body(
+                        new ApiError(400, "Invalid number format.")
+                );
+            }
+        }
+
+        return ResponseEntity.badRequest().body(
+                new ApiError(400, "Malformed request body.")
         );
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ApiError> handleDataIntegrity(DataIntegrityViolationException ex) {
+
+        if (ex.getRootCause() != null &&
+                ex.getRootCause().getMessage().contains("goal_no_overlap")) {
+
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(new ApiError(409,"An active goal of this type already overlaps the selected date range."));
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ApiError(400,"Database constraint violation"));
     }
 
     @ExceptionHandler(Exception.class)
