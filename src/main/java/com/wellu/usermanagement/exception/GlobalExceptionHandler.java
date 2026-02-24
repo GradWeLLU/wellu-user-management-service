@@ -1,8 +1,12 @@
 package com.wellu.usermanagement.exception;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.Instant;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -23,6 +27,24 @@ public class GlobalExceptionHandler {
                 HttpStatus.NOT_FOUND
         );
     }
+    @ExceptionHandler(GoalConflictException.class)
+    public ResponseEntity<ApiError> handleGoalConflictException(GoalConflictException ex) {
+
+        return new ResponseEntity<>(
+                new ApiError(409, ex.getMessage()),
+                HttpStatus.CONFLICT
+        );
+    }
+
+    @ExceptionHandler(InvalidGoalDateException.class)
+    public ResponseEntity<ApiError> handleInvalidGoalDateException(InvalidGoalDateException ex) {
+
+        return new ResponseEntity<>(
+                new ApiError(400, ex.getMessage()),
+                HttpStatus.BAD_REQUEST
+        );
+    }
+
     @ExceptionHandler(ProfileNotFoundException.class)
     public ResponseEntity<ApiError> handleProfileNotFound(ProfileNotFoundException ex) {
 
@@ -37,6 +59,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(
                 new ApiError(401, ex.getMessage()),
                 HttpStatus.UNAUTHORIZED
+        );
+    }
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ApiError> handleInvalidDate(HttpMessageNotReadableException ex) {
+
+        return new ResponseEntity<>(
+                new ApiError(400, "Invalid date format. Use yyyy-MM-dd"),
+                HttpStatus.BAD_REQUEST
         );
     }
 

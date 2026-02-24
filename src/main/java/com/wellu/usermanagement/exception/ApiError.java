@@ -1,5 +1,10 @@
 package com.wellu.usermanagement.exception;
 
+import lombok.Builder;
+import lombok.Getter;
+
+@Getter
+@Builder
 public class ApiError {
     private int status;
     private String message;
