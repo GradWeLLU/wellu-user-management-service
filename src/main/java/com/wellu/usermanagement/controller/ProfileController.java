@@ -1,13 +1,12 @@
 package com.wellu.usermanagement.controller;
 
 
+import com.wellu.usermanagement.dto.request.UserProfileUpdateRequest;
 import com.wellu.usermanagement.dto.response.UserProfileResponse;
 import com.wellu.usermanagement.service.ProfileService;
 import com.wellu.usermanagement.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/profile")
@@ -26,6 +25,13 @@ public class ProfileController {
         return profileService.getProfile();
     }
 
+    @PutMapping("/me")
+    public ResponseEntity<UserProfileResponse> updateProfile(
+            @RequestBody UserProfileUpdateRequest request
+    ) {
+        System.out.println("here"); // now will print
+        return profileService.updateProfile(request);
+    }
 
 
 }
