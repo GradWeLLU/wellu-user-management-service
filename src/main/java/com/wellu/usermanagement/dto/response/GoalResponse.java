@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public record GoalResponse( UUID id,
-                            GoalType type,
+                            GoalType goalType,
                             Integer targetValue,
                             Integer currentValue,
                             LocalDate startDate,
