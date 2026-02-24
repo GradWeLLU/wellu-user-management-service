@@ -11,9 +11,6 @@ public record UserProfileResponse (
         String email,
         String firstName,
         String lastName,
-//        UserRole role,
-//        UserStatus status,
-//        Instant createdAt,
 
         // Profile fields
         Integer age,
