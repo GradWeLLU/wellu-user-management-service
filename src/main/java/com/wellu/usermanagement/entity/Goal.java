@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.context.annotation.Profile;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -20,7 +19,7 @@ import java.util.UUID;
 @Table(name="goals")
 public class Goal {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy =GenerationType.UUID)
     @Column(name="id")
     private UUID id;
 
@@ -35,13 +34,13 @@ public class Goal {
     private Double currentValue;
 
     @Column(name = "start_date", nullable = false)
-    private Instant startDate;
+    private LocalDate startDate;
 
     @Column(name = "end_date", nullable = false)
-    private Instant endDate;
+    private LocalDate endDate;
 
     @Column(name = "is_completed", nullable = false)
-    private Boolean isCompleted = false;
+    private boolean isCompleted = false;
 
     @ManyToOne
     @JoinColumn(name = "user_profile_id", nullable = false)

@@ -23,7 +23,14 @@ public class GlobalExceptionHandler {
                 HttpStatus.NOT_FOUND
         );
     }
+    @ExceptionHandler(ProfileNotFoundException.class)
+    public ResponseEntity<ApiError> handleProfileNotFound(ProfileNotFoundException ex) {
 
+        return new ResponseEntity<>(
+                new ApiError(404, ex.getMessage()),
+                HttpStatus.NOT_FOUND
+        );
+    }
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ApiError> handleAuthException(AuthenticationException ex) {
 

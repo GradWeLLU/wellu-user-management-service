@@ -1,9 +1,5 @@
 package com.wellu.usermanagement.dto.response;
 
-import com.wellu.usermanagement.enumeration.UserRole;
-import com.wellu.usermanagement.enumeration.UserStatus;
-
-import java.time.Instant;
 import java.util.UUID;
 
 public record UserProfileResponse (
