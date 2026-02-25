@@ -41,11 +41,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
         UUID userId = jwtService.extractUserId(token);
 
+        CustomUserPrincipal principal = new CustomUserPrincipal(userId);
+
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(
-                        userId.toString(),
+                        principal,
                         null,
-                        List.of(new SimpleGrantedAuthority("ROLE_USER"))
+                        principal.getAuthorities()
                 );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
