@@ -1,6 +1,8 @@
 package com.wellu.usermanagement.controller;
 
 
+import com.wellu.usermanagement.dto.request.CreateInjuryRequest;
+import com.wellu.usermanagement.dto.request.HealthProfilePatchRequest;
 import com.wellu.usermanagement.dto.request.HealthProfileUpdateRequest;
 import com.wellu.usermanagement.dto.request.UserProfileUpdateRequest;
 import com.wellu.usermanagement.dto.response.HealthProfileResponseDto;
@@ -38,7 +40,6 @@ public class ProfileController {
     }
     @GetMapping("/me/health")
     public ResponseEntity<HealthProfileResponseDto> getMyHealthProfile() {
-        System.out.println("here");
         return ResponseEntity.ok(healthProfileService.getMyProfile());
     }
 
@@ -49,6 +50,12 @@ public class ProfileController {
         return ResponseEntity.ok(healthProfileService.updateMyProfile(request));
     }
 
+    @PatchMapping("/me/health")
+    public ResponseEntity<HealthProfileResponseDto> updateMyHealthProfile(
+            @RequestBody HealthProfilePatchRequest request
+            ){
+        return ResponseEntity.ok(healthProfileService.patchMyProfile(request));
+    }
 
 
 }
