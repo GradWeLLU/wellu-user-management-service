@@ -41,6 +41,15 @@ public class Injury {
     @JoinColumn(name = "health_profile_id", nullable = false)
     private HealthProfile healthProfile;
 
+    public Injury(String name, String description, SeverityLevel severityLevel, Instant startDate, Instant endDate, boolean isChronic){
+        this.name = name;
+        this.description = description;
+        this.severityLevel = severityLevel;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.isChronic = isChronic;
+    }
+
     public void updateSeverityLevel(SeverityLevel level){
         this.severityLevel = level;
     }

@@ -21,6 +21,10 @@ public interface HealthProfileMapper {
 
     @Named("extractIds")
     static <T> List<UUID> extractIds(List<T> entities) {
+        if (entities == null || entities.isEmpty()) {
+            return List.of();
+        }
+
         return entities.stream()
                 .map(e -> {
                     try {

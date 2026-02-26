@@ -34,6 +34,12 @@ public class Allergy {
     @JoinColumn(name = "health_profile_id", nullable = false)
     private HealthProfile healthProfile;
 
+    public Allergy(String name, String description, SeverityLevel severityLevel){
+        this.name = name;
+        this.description = description;
+        this.severityLevel = severityLevel;
+    }
+
     public void updateSeverityLevel(SeverityLevel level){
         this.severityLevel = level;
     }

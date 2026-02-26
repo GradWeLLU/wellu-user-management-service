@@ -44,6 +44,14 @@ public class Medication {
     private HealthProfile healthProfile;
 
 
+    public Medication(String name, Double dosage, int frequency, Instant startDate, Instant endDate){
+        this.name = name;
+        this.dosage = dosage;
+        this.frequency = frequency;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
     public void setHealthProfile(HealthProfile profile){
         this.healthProfile = profile;
     }

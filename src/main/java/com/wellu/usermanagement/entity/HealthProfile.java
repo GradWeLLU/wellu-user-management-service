@@ -84,5 +84,8 @@ public class HealthProfile {
         this.medications.remove(medication);
         medication.setHealthProfile(null);
     }
+    public void setUserProfile(UserProfile profile){
+        this.userProfile = profile;
+    }
 
 }

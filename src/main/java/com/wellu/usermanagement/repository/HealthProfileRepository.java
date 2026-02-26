@@ -8,4 +8,5 @@ import java.util.UUID;
 
 public interface HealthProfileRepository extends JpaRepository<HealthProfile, UUID> {
     Optional<HealthProfile> findByUserProfileId(UUID userProfileId);
+    Optional<HealthProfile> findByUserProfile_User_Id(UUID userId);
 }
