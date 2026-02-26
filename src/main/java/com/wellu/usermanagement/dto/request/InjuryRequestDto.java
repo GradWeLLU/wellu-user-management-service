@@ -13,6 +13,5 @@ public record InjuryRequestDto(
         @NotNull SeverityLevel severityLevel,
         Instant startDate,
         Instant endDate,
-        boolean isChronic,
-        @NotNull UUID healthProfileId
+        boolean isChronic
 ) {}

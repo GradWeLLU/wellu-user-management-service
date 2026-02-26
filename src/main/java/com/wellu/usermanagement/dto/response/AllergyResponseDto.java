@@ -2,15 +2,12 @@ package com.wellu.usermanagement.dto.response;
 
 import com.wellu.usermanagement.enumeration.SeverityLevel;
 
-import java.time.Instant;
 import java.util.UUID;
 
-public record InjuryResponseDto(
+public record AllergyResponseDto(
         UUID id,
         String name,
         String description,
-        SeverityLevel severityLevel,
-        Instant startDate,
-        Instant endDate,
-        boolean isChronic
-) {}
+        SeverityLevel severityLevel
+) {
+}

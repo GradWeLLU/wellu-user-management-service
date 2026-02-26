@@ -5,9 +5,9 @@ import java.util.UUID;
 
 public record HealthProfileResponseDto(
         UUID id,
-        List<UUID> injuryIds,
-        List<UUID> allergyIds,
-        List<UUID> medicationIds,
+        List<InjuryResponseDto> injuries,
+        List<AllergyResponseDto> allergies,
+        List<MedicationResponseDto> medications,
         UUID userProfileId
 ) {
 }
