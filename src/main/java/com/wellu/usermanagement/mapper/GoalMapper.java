@@ -1,10 +1,12 @@
 package com.wellu.usermanagement.mapper;
 
 import com.wellu.usermanagement.dto.request.GoalRequest;
+import com.wellu.usermanagement.dto.request.GoalUpdateRequest;
 import com.wellu.usermanagement.dto.response.GoalResponse;
 import com.wellu.usermanagement.entity.Goal;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
@@ -19,6 +21,8 @@ public interface GoalMapper {
     @Mapping(target = "goalType", source = "type")
     Goal toEntity(GoalRequest request);
     List<GoalResponse> toResponseList(List<Goal> goals);
+
+//    void updateGoalFromDto(GoalUpdateRequest dto, @MappingTarget Goal goal);
 }
 
 

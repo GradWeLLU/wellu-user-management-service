@@ -1,9 +1,11 @@
 package com.wellu.usermanagement.service;
 
 import com.wellu.usermanagement.dto.request.GoalRequest;
+import com.wellu.usermanagement.dto.request.GoalUpdateRequest;
 import com.wellu.usermanagement.dto.response.GoalResponse;
 import com.wellu.usermanagement.entity.Goal;
 import com.wellu.usermanagement.entity.UserProfile;
+import com.wellu.usermanagement.exception.GoalNotFoundException;
 import com.wellu.usermanagement.exception.InvalidGoalDateException;
 import com.wellu.usermanagement.exception.ProfileNotFoundException;
 import com.wellu.usermanagement.mapper.GoalMapper;
@@ -11,8 +13,8 @@ import com.wellu.usermanagement.repository.GoalRepository;
 import com.wellu.usermanagement.repository.UserProfileRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import jakarta.persistence.*;
 
+import java.nio.file.AccessDeniedException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -52,7 +54,7 @@ public class GoalService {
                 .findByUserId(userId)
                 .orElseThrow(() -> new ProfileNotFoundException("Profile not found"));
 
-        validateDateRange(request.startDate(), request.endDate());
+        validateDates(request.startDate(), request.endDate());
 
         Goal goal = goalMapper.toEntity(request);
         goal.setUserProfile(profile);
@@ -64,7 +66,7 @@ public class GoalService {
         return goalMapper.toResponse(saved);
     }
 
-    private void validateDateRange(LocalDate startDate, LocalDate endDate) {
+    private void validateDates(LocalDate startDate, LocalDate endDate) {
         LocalDate today = LocalDate.now();
         LocalDate maxAllowedStart = LocalDate.now().plusYears(1);
 
@@ -84,7 +86,21 @@ public class GoalService {
             throw new InvalidGoalDateException("Start date cannot be after end date");
         }
 
-
     }
 
+    public GoalResponse updateGoal(UUID goalId, UUID userId, GoalUpdateRequest request) {
+
+        //checks if goal exists, and whether goals belongs to that user
+        Goal goal = goalRepository
+                .findByIdAndUserProfile_UserId(goalId, userId)
+                .orElseThrow(() -> new GoalNotFoundException("Goal not found"));
+
+        validateDates(request.startDate(), request.endDate());
+
+        goal.setTargetValue(request.targetValue());
+        goal.setStartDate(request.startDate());
+        goal.setEndDate(request.endDate());
+
+        return goalMapper.toResponse(goalRepository.save(goal));
+    }
 }
