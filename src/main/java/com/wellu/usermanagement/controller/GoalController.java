@@ -1,6 +1,7 @@
 package com.wellu.usermanagement.controller;
 
 import com.wellu.usermanagement.dto.request.GoalRequest;
+import com.wellu.usermanagement.dto.request.GoalUpdateRequest;
 import com.wellu.usermanagement.dto.response.GoalResponse;
 import com.wellu.usermanagement.security.CustomUserPrincipal;
 import com.wellu.usermanagement.service.GoalService;
@@ -39,6 +40,17 @@ public class GoalController {
     ) {
         UUID userId = principal.getUserId();
         GoalResponse response = goalService.createGoal(userId, request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PutMapping("/updateGoal/{goalId}")
+    public ResponseEntity<GoalResponse> updateGoal(
+            @PathVariable UUID goalId,
+            @AuthenticationPrincipal CustomUserPrincipal principal,
+            @RequestBody GoalUpdateRequest request) {
+        GoalResponse response =
+                goalService.updateGoal(goalId, principal.getUserId(), request);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

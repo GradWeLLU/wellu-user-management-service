@@ -36,6 +36,14 @@ public class GlobalExceptionHandler {
                 HttpStatus.CONFLICT
         );
     }
+    @ExceptionHandler(GoalNotFoundException.class)
+    public ResponseEntity<ApiError> GoalNotFoundException(GoalNotFoundException ex) {
+
+        return new ResponseEntity<>(
+                new ApiError(404, ex.getMessage()),
+                HttpStatus.NOT_FOUND
+        );
+    }
 
     @ExceptionHandler(InvalidGoalDateException.class)
     public ResponseEntity<ApiError> handleInvalidGoalDateException(InvalidGoalDateException ex) {
