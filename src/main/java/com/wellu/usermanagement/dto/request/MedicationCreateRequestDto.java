@@ -22,9 +22,6 @@ public record MedicationCreateRequestDto(
         @NotNull
         Instant startDate,
 
-        Instant endDate,
-
-        @NotNull
-        UUID healthProfileId
+        Instant endDate
 
 ) {}

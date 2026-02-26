@@ -1,8 +1,7 @@
 package com.wellu.usermanagement.service;
 
-
-import com.wellu.usermanagement.dto.request.MedicationCreateRequestDto;
-import com.wellu.usermanagement.dto.request.MedicationUpdateRequestDto;
+import com.wellu.usermanagement.dto.request.CreateMedicationRequest;
+import com.wellu.usermanagement.dto.request.CreateMedicationRequest;
 import com.wellu.usermanagement.dto.response.MedicationResponseDto;
 import com.wellu.usermanagement.entity.HealthProfile;
 import com.wellu.usermanagement.entity.Medication;
@@ -14,66 +13,50 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.util.List;
 import java.util.UUID;
-
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class MedicationService {
 
-
     private final MedicationRepository medicationRepository;
     private final HealthProfileRepository healthProfileRepository;
     private final MedicationMapper medicationMapper;
 
-
-    public MedicationResponseDto create(MedicationCreateRequestDto request) {
-        HealthProfile profile = healthProfileRepository.findById(request.healthProfileId())
+    public MedicationResponseDto create(CreateMedicationRequest request, UUID healthProfileId) {
+        HealthProfile profile = healthProfileRepository.findById(healthProfileId)
                 .orElseThrow(() -> new EntityNotFoundException("Health profile not found"));
 
-
         Medication medication = medicationMapper.toEntity(request, profile);
-
-
         Medication saved = medicationRepository.save(medication);
-        return medicationMapper.toResponse(saved);
+        return medicationMapper.toDto(saved);
     }
-
 
     @Transactional(readOnly = true)
     public MedicationResponseDto getById(UUID id) {
         Medication medication = medicationRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Medication not found"));
-
-
-        return medicationMapper.toResponse(medication);
+        return medicationMapper.toDto(medication);
     }
-
 
     @Transactional(readOnly = true)
     public List<MedicationResponseDto> getAllByHealthProfile(UUID healthProfileId) {
         List<Medication> medications = medicationRepository.findAllByHealthProfileId(healthProfileId);
         return medications.stream()
-                .map(medicationMapper::toResponse)
+                .map(medicationMapper::toDto)
                 .toList();
     }
 
-
-    public MedicationResponseDto update(UUID id, MedicationUpdateRequestDto request) {
+    public MedicationResponseDto update(UUID id, CreateMedicationRequest request) {
         Medication medication = medicationRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Medication not found"));
 
-
         medicationMapper.updateEntityFromDto(request, medication);
-
-
         Medication updated = medicationRepository.save(medication);
-        return medicationMapper.toResponse(updated);
+        return medicationMapper.toDto(updated);
     }
-
 
     public void delete(UUID id) {
         if (!medicationRepository.existsById(id)) {

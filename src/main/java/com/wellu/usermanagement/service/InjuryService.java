@@ -1,5 +1,6 @@
 package com.wellu.usermanagement.service;
 
+import com.wellu.usermanagement.dto.request.CreateInjuryRequest;
 import com.wellu.usermanagement.dto.request.InjuryRequestDto;
 import com.wellu.usermanagement.dto.response.InjuryResponseDto;
 import com.wellu.usermanagement.entity.Injury;
@@ -19,7 +20,7 @@ public class InjuryService {
     private final InjuryRepository injuryRepository;
     private final InjuryMapper injuryMapper;
 
-    public InjuryResponseDto createInjury(InjuryRequestDto dto) {
+    public InjuryResponseDto createInjury(CreateInjuryRequest dto) {
         Injury injury = injuryMapper.toEntity(dto);
         Injury saved = injuryRepository.save(injury);
         return injuryMapper.toDto(saved);
