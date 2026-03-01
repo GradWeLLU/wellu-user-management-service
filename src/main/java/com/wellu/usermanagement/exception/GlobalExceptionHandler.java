@@ -117,6 +117,15 @@ public class GlobalExceptionHandler {
                 .body(new ApiError(400,"Database constraint violation"));
     }
 
+    @ExceptionHandler(ProgressEntryNotFound.class)
+    public ResponseEntity<ApiError> handleAllExceptions(ProgressEntryNotFound ex) {
+
+        return new ResponseEntity<>(
+                new ApiError(404, "Progress entry not found."),
+                HttpStatus.BAD_REQUEST
+        );
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleAllExceptions(Exception ex) {
 
