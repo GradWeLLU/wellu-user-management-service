@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -19,7 +18,7 @@ import java.util.UUID;
 @Table(name="progress_entries")
 public class ProgressEntry {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name="id")
     private UUID id;
 
