@@ -1,7 +1,7 @@
 package com.wellu.usermanagement.exception;
 
-public class ProgressEntryNotFoundException extends RuntimeException {
-    public ProgressEntryNotFoundException(String message) {
+public class ProgressEntryException extends RuntimeException {
+    public ProgressEntryException(String message) {
         super(message);
     }
 }

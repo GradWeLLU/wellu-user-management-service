@@ -59,4 +59,6 @@ public class UserProfile {
     public double calculateBMI(){
         return weight / (height * height);
     }
+
+
 }
