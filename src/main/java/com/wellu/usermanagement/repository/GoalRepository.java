@@ -33,4 +33,10 @@ public interface GoalRepository extends JpaRepository<Goal, UUID> {
     );
 
     Optional<Goal> findByIdAndUserProfile_UserId(UUID goalId, UUID userId);
+
+    Optional<Goal> findByUserProfile_IdAndGoalTypeAndIsCompletedFalse(
+            UUID userProfileId,
+            GoalType goalType
+    );
+
 }
