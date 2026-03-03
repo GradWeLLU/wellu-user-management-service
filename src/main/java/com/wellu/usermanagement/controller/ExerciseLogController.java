@@ -24,7 +24,7 @@ public class ExerciseLogController {
         this.exerciseLogService = exerciseLogService;
     }
 
-    @PostMapping("/createLog")
+    @PostMapping
     public ResponseEntity<ExerciseLogResponseDto> createLog(
             @AuthenticationPrincipal CustomUserPrincipal principal,
             @Valid @RequestBody ExerciseLogRequestDto dto
@@ -53,7 +53,7 @@ public class ExerciseLogController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/exerciseLogs/{logId}")
+    @DeleteMapping("/{logId}")
     public ResponseEntity<Void> deleteLog(
             @PathVariable UUID logId,
             @AuthenticationPrincipal CustomUserPrincipal principal
@@ -63,6 +63,15 @@ public class ExerciseLogController {
 
         exerciseLogService.deleteLog(logId, userId);
 
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/entries/{entryId}")
+    public ResponseEntity<Void> deleteEntry(
+            @PathVariable UUID entryId,
+            @AuthenticationPrincipal CustomUserPrincipal principal) {
+
+        exerciseLogService.deleteEntry(entryId, principal.getUserId());
         return ResponseEntity.noContent().build();
     }
 

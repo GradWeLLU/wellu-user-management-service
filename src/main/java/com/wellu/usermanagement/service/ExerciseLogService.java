@@ -7,6 +7,7 @@ import com.wellu.usermanagement.entity.ExerciseLog;
 import com.wellu.usermanagement.entity.ExerciseLogEntry;
 import com.wellu.usermanagement.entity.User;
 import com.wellu.usermanagement.exception.ResourceNotFoundException;
+import com.wellu.usermanagement.exception.UserNotFoundException;
 import com.wellu.usermanagement.mapper.ExerciseLogEntryMapper;
 import com.wellu.usermanagement.mapper.ExerciseLogMapper;
 import com.wellu.usermanagement.repository.ExerciseEntryRepository;
@@ -36,7 +37,7 @@ public class ExerciseLogService {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("User not found"));
+                        new UserNotFoundException("User not found"));
 
         ExerciseLog log = exerciseLogMapper.toEntity(dto);
 
@@ -55,7 +56,7 @@ public class ExerciseLogService {
         ExerciseLog log = exerciseLogRepository
                 .findByIdAndUser_Id(logId, userId)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("ExerciseLog not found"));
+                        new ResourceNotFoundException("Exercise log not found"));
 
         ExerciseLogEntry entry = exerciseLogEntryMapper.toEntity(entryDto);
 
@@ -71,8 +72,24 @@ public class ExerciseLogService {
         ExerciseLog log = exerciseLogRepository
                 .findByIdAndUser_Id(logId, userId)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("ExerciseLog not found"));
+                        new ResourceNotFoundException("Exercise log not found"));
 
         exerciseLogRepository.delete(log);
+    }
+
+    @Transactional
+    public void deleteEntry(UUID entryId, UUID userId) {
+        ExerciseLogEntry entry = exerciseEntryRepository
+                .findById(entryId)
+                .orElseThrow(() -> new ResourceNotFoundException("Exercise log entry not found"));
+
+        if (!entry.getExerciseLog().getUser().getId().equals(userId)) {
+            throw new ResourceNotFoundException("Exercise log entry not found for this user");
+        }
+
+        ExerciseLog log = entry.getExerciseLog();
+        log.getEntries().remove(entry);
+
+        exerciseEntryRepository.delete(entry);
     }
 }
