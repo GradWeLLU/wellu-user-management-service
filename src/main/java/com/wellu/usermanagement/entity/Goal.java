@@ -2,12 +2,8 @@ package com.wellu.usermanagement.entity;
 
 import com.wellu.usermanagement.enumeration.GoalType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.UUID;
 

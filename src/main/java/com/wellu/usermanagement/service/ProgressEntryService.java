@@ -10,13 +10,11 @@ import com.wellu.usermanagement.exception.AuthenticationException;
 import com.wellu.usermanagement.exception.ProfileNotFoundException;
 import com.wellu.usermanagement.exception.ProgressEntryException;
 import com.wellu.usermanagement.mapper.ProgressEntryMapper;
-import com.wellu.usermanagement.repository.GoalRepository;
 import com.wellu.usermanagement.repository.ProgressEntryRepository;
 import com.wellu.usermanagement.repository.UserProfileRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.lang.module.ResolutionException;
 import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -136,6 +134,7 @@ public class ProgressEntryService {
         updateCaloriesGoal(profileId);
         updateWorkoutPerWeekGoal(profileId);
     }
+
     private void updateWeightGoal(UUID profileId) {
 
         Double latestWeight = progressEntryRepository
