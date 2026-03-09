@@ -5,6 +5,7 @@ import com.wellu.usermanagement.dto.request.GoalUpdateRequest;
 import com.wellu.usermanagement.dto.response.GoalResponse;
 import com.wellu.usermanagement.entity.Goal;
 import com.wellu.usermanagement.entity.UserProfile;
+import com.wellu.usermanagement.enumeration.GoalType;
 import com.wellu.usermanagement.exception.GoalNotFoundException;
 import com.wellu.usermanagement.exception.InvalidGoalDateException;
 import com.wellu.usermanagement.exception.ProfileNotFoundException;
@@ -14,9 +15,9 @@ import com.wellu.usermanagement.repository.UserProfileRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.AccessDeniedException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -41,8 +42,6 @@ public class GoalService {
 
         List<Goal> goals = goalRepository
                 .findByUserProfileId(profile.getId());
-
-
 
         return goalMapper.toResponseList(goals);
     }
@@ -102,5 +101,41 @@ public class GoalService {
         goal.setEndDate(request.endDate());
 
         return goalMapper.toResponse(goalRepository.save(goal));
+    }
+
+    @Transactional
+    public Optional<Goal> updateGoalProgress(UUID userProfileId, GoalType type, double newValue) {
+
+        Optional<Goal> optionalGoal =
+                goalRepository.findByUserProfile_IdAndGoalTypeAndIsCompletedFalse(userProfileId, type);
+
+        if (optionalGoal.isEmpty()) {
+            return Optional.empty(); // ← THIS IS THE CORRECT BEHAVIOR
+        }
+
+        Goal goal = optionalGoal.get();
+
+        isGoalCompleted(goal);
+
+        goal.updateCurrentValue(newValue);
+
+        if (newValue >= goal.getTargetValue()) {
+            goal.setCompleted(true);
+        }
+        goalRepository.save(goal);
+
+        return Optional.of(goal);
+    }
+
+//    private void isGoalEmpty(Optional<Goal> optionalGoal) {
+//        if (optionalGoal.isEmpty()) {
+//            throw  new GoalNotFoundException("Goal not found."); // No matching goal → do nothing
+//        }
+//    }
+
+    private void isGoalCompleted(Goal goal) {
+        if (goal.isCompleted()) {
+            throw  new GoalNotFoundException("Goal is already completed");
+        }
     }
 }
