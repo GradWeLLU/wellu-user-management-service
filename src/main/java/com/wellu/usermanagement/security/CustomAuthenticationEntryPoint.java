@@ -9,7 +9,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Map;
 
 @Component
@@ -31,7 +31,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
         Map<String, Object> body = Map.of(
-                "timestamp", LocalDateTime.now(),
+                "timestamp", Instant.now().toString(),
                 "status", 401,
                 "error", "Unauthorized",
                 "message", "Invalid or missing token",
