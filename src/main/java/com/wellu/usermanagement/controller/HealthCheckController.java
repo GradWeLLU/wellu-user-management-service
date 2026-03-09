@@ -5,6 +5,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HealthCheckController {
+    @GetMapping("/")
+    public String root(){
+        return "wellu user management service is running";
+    }
+
     @GetMapping("/health")
     public String health(){
         return "ok kokomama";
