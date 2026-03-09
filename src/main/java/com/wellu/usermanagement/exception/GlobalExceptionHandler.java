@@ -128,7 +128,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleAllExceptions(Exception ex) {
-
+        ex.printStackTrace();
         return new ResponseEntity<>(
                 new ApiError(500, "Internal server error"),
                 HttpStatus.INTERNAL_SERVER_ERROR

@@ -33,25 +33,55 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
 
+//        String token = authHeader.substring(7);
+
         String token = authHeader.substring(7);
 
-        if(!jwtService.isTokenValid(token)) {
+        try {
+
+            if (!jwtService.isTokenValid(token)) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+
+            UUID userId = jwtService.extractUserId(token);
+
+            CustomUserPrincipal principal = new CustomUserPrincipal(userId);
+
+            UsernamePasswordAuthenticationToken authentication =
+                    new UsernamePasswordAuthenticationToken(
+                            principal,
+                            null,
+                            principal.getAuthorities()
+                    );
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        } catch (Exception e) {
+            // invalid token → just continue without authentication
             filterChain.doFilter(request, response);
             return;
         }
-        UUID userId = jwtService.extractUserId(token);
-
-        CustomUserPrincipal principal = new CustomUserPrincipal(userId);
-
-        UsernamePasswordAuthenticationToken authentication =
-                new UsernamePasswordAuthenticationToken(
-                        principal,
-                        null,
-                        principal.getAuthorities()
-                );
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         filterChain.doFilter(request, response);
+
+//        if(!jwtService.isTokenValid(token)) {
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
+//        UUID userId = jwtService.extractUserId(token);
+//
+//        CustomUserPrincipal principal = new CustomUserPrincipal(userId);
+//
+//        UsernamePasswordAuthenticationToken authentication =
+//                new UsernamePasswordAuthenticationToken(
+//                        principal,
+//                        null,
+//                        principal.getAuthorities()
+//                );
+//
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//
+//        filterChain.doFilter(request, response);
     }
 }
