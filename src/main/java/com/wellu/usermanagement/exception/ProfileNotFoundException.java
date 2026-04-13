@@ -1,7 +1,10 @@
 package com.wellu.usermanagement.exception;
 
-public class ProfileNotFoundException extends RuntimeException {
+import org.wellu.common.exception.BaseException;
+import org.springframework.http.HttpStatus;
+
+public class ProfileNotFoundException extends BaseException {
     public ProfileNotFoundException(String message) {
-        super(message);
+        super(message, HttpStatus.NOT_FOUND, "PROFILE_NOT_FOUND");
     }
 }

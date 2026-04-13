@@ -1,7 +1,10 @@
 package com.wellu.usermanagement.exception;
 
-public class ProgressEntryException extends RuntimeException {
+import org.wellu.common.exception.BaseException;
+import org.springframework.http.HttpStatus;
+
+public class ProgressEntryException extends BaseException {
     public ProgressEntryException(String message) {
-        super(message);
+        super(message, HttpStatus.BAD_REQUEST, "PROGRESS_ENTRY_ERROR");
     }
 }
