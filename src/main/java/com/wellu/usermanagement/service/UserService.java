@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -50,6 +51,9 @@ public class UserService {
         if(isEmailExist){
             throw new RegisterException("Email already exists");
         }
+    }
+    public List<User> getAllUsers(){
+        return userRepository.findAll();
     }
 }
 
