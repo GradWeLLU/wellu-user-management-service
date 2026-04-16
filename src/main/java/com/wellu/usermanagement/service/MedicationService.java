@@ -1,7 +1,6 @@
 package com.wellu.usermanagement.service;
 
 import com.wellu.usermanagement.dto.request.CreateMedicationRequest;
-import com.wellu.usermanagement.dto.request.CreateMedicationRequest;
 import com.wellu.usermanagement.dto.response.MedicationResponseDto;
 import com.wellu.usermanagement.entity.HealthProfile;
 import com.wellu.usermanagement.entity.Medication;

@@ -1,7 +1,6 @@
 package com.wellu.usermanagement.service;
 
 import com.wellu.usermanagement.dto.request.CreateInjuryRequest;
-import com.wellu.usermanagement.dto.request.InjuryRequestDto;
 import com.wellu.usermanagement.dto.response.InjuryResponseDto;
 import com.wellu.usermanagement.entity.Injury;
 import com.wellu.usermanagement.enumeration.SeverityLevel;
