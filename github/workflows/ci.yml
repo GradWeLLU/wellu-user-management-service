@@ -19,9 +19,10 @@
             distribution: 'temurin'
             java-version: '17'
             server-id: github
+            server-username: ${{ github.actor }}
+            server-password: ${{ secrets.GITHUB_TOKEN }}
 
         - name: Build with Maven
           run: mvn clean install
           env:
             JWT_SECRET: ${{ secrets.JWT_SECRET }}
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
