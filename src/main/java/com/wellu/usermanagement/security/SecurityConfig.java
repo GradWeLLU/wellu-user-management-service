@@ -1,5 +1,10 @@
 package com.wellu.usermanagement.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.wellu.common.security.JwtConfig;
+import org.wellu.common.security.JwtAuthFilter;
 import com.wellu.usermanagement.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,22 +14,49 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.wellu.common.security.JwtService;
+import org.wellu.common.security.CustomAuthenticationEntryPoint;
+import org.wellu.common.security.CustomAccessDeniedHandler;
 
 import java.util.List;
 
 @Configuration
 public class SecurityConfig {
-    private final JwtAuthFilter jwtAuthFilter;
-    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
-    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
-    public SecurityConfig(JwtAuthFilter jwtAuthFilter,CustomAuthenticationEntryPoint customAuthenticationEntryPoint,CustomAccessDeniedHandler customAccessDeniedHandler) {
-        this.jwtAuthFilter = jwtAuthFilter;
-        this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
-        this.customAccessDeniedHandler=customAccessDeniedHandler;
-    }
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public JwtService jwtService(
+            @Value("${jwt.secret}") String secret,
+            @Value("${jwt.expiration-ms}") long expiration
+    ) {
+        JwtConfig config = JwtConfig.builder()
+                .secret(secret)
+                .expiration(expiration)
+                .build();
+
+        return new JwtService(config);
+    }
+
+    @Bean
+    public JwtAuthFilter jwtAuthFilter(JwtService jwtService) {
+        return new JwtAuthFilter(jwtService, userId -> {
+            CustomUserPrincipal principal = new CustomUserPrincipal(userId);
+
+            return new UsernamePasswordAuthenticationToken(
+                    principal,
+                    null,
+                    principal.getAuthorities()
+            );
+        });
+    }
+
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http,
+            JwtAuthFilter jwtAuthFilter,
+            CustomAuthenticationEntryPoint customAuthenticationEntryPoint,
+            CustomAccessDeniedHandler customAccessDeniedHandler
+    ) throws Exception {
 
         http
                 .csrf(csrf -> csrf.disable())
@@ -42,6 +74,16 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    @Bean
+    public CustomAuthenticationEntryPoint customAuthenticationEntryPoint(ObjectMapper objectMapper) {
+        return new CustomAuthenticationEntryPoint(objectMapper);
+    }
+
+    @Bean
+    public CustomAccessDeniedHandler customAccessDeniedHandler(ObjectMapper objectMapper) {
+        return new CustomAccessDeniedHandler(objectMapper);
     }
 
     @Bean

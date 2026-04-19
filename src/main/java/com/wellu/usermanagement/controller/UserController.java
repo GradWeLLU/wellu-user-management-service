@@ -9,16 +9,14 @@ import com.wellu.usermanagement.dto.response.WorkoutPlanRequestDTO;
 import com.wellu.usermanagement.entity.User;
 import com.wellu.usermanagement.security.CustomUserPrincipal;
 import com.wellu.usermanagement.service.AuthService;
-import com.wellu.usermanagement.security.JwtService;
-import com.wellu.usermanagement.service.PlanGenerationService;
 import com.wellu.usermanagement.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.UUID;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.wellu.common.security.JwtService;
 
 @RestController
 @RequiredArgsConstructor

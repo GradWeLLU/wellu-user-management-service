@@ -1,7 +1,9 @@
 package com.wellu.usermanagement.exception;
 
-public class AuthenticationException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+import org.wellu.common.exception.BaseException;
+public class AuthenticationException extends BaseException {
     public AuthenticationException(String message) {
-        super(message);
+        super(message, HttpStatus.UNAUTHORIZED, "UNAUTHORIZED");
     }
 }

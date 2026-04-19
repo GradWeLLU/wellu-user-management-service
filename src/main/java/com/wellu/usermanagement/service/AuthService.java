@@ -5,7 +5,7 @@ import com.wellu.usermanagement.dto.response.LoginResponse;
 import com.wellu.usermanagement.entity.User;
 import com.wellu.usermanagement.exception.AuthenticationException;
 import com.wellu.usermanagement.repository.UserRepository;
-import com.wellu.usermanagement.security.JwtService;
+import org.wellu.common.security.JwtService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
