@@ -3,6 +3,7 @@ package com.wellu.usermanagement.controller;
 import com.wellu.usermanagement.dto.request.UserLoginRequest;
 import com.wellu.usermanagement.dto.request.UserRegisterRequest;
 import com.wellu.usermanagement.dto.response.LoginResponse;
+import com.wellu.usermanagement.dto.response.NutritionPlanRequestDTO;
 import com.wellu.usermanagement.dto.response.UserRegisterResponse;
 import com.wellu.usermanagement.dto.response.WorkoutPlanRequestDTO;
 import com.wellu.usermanagement.entity.User;
@@ -53,6 +54,12 @@ public class UserController {
     public ResponseEntity<WorkoutPlanRequestDTO> getWorkoutPlanDetails(@AuthenticationPrincipal CustomUserPrincipal principal){
         UUID userId = principal.getUserId();
         return planGenerationService.buildWorkoutPlanRequestDTO(userId);
+    }
+
+    @GetMapping("/request-nutrition-details")
+    public ResponseEntity<NutritionPlanRequestDTO> getNutritionPlanDetails(@AuthenticationPrincipal CustomUserPrincipal principal) {
+        UUID userId = principal.getUserId();
+        return planGenerationService.buildNutritionPlanRequestDTO(userId);
     }
 
 }
