@@ -4,9 +4,9 @@ import com.wellu.usermanagement.dto.request.UserLoginRequest;
 import com.wellu.usermanagement.dto.request.UserRegisterRequest;
 import com.wellu.usermanagement.dto.response.LoginResponse;
 import com.wellu.usermanagement.dto.response.NutritionPlanRequestDTO;
+import com.wellu.usermanagement.dto.response.UserProfileResponse;
 import com.wellu.usermanagement.dto.response.UserRegisterResponse;
 import com.wellu.usermanagement.dto.response.WorkoutPlanRequestDTO;
-import com.wellu.usermanagement.entity.User;
 import com.wellu.usermanagement.security.CustomUserPrincipal;
 import com.wellu.usermanagement.service.AuthService;
 import com.wellu.usermanagement.service.PlanGenerationService;
@@ -46,7 +46,7 @@ public class UserController {
         return authService.login(request);
     }
     @GetMapping("/all")
-    public List<User> getAllUsers(){
+    public List<UserProfileResponse> getAllUsers(){
         return userService.getAllUsers();
     }
 
