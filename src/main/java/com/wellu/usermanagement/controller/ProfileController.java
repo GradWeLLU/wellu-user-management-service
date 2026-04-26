@@ -2,12 +2,15 @@ package com.wellu.usermanagement.controller;
 
 
 import com.wellu.usermanagement.dto.request.CreateInjuryRequest;
+import com.wellu.usermanagement.dto.request.CompleteProfileRequest;
 import com.wellu.usermanagement.dto.request.HealthProfilePatchRequest;
 import com.wellu.usermanagement.dto.request.HealthProfileUpdateRequest;
 import com.wellu.usermanagement.dto.request.UserProfileUpdateRequest;
+import com.wellu.usermanagement.dto.response.CompleteProfileResponse;
 import com.wellu.usermanagement.dto.response.HealthProfileResponseDto;
 import com.wellu.usermanagement.dto.response.UserProfileResponse;
 import com.wellu.usermanagement.service.HealthProfileService;
+import com.wellu.usermanagement.service.ProfileOnboardingService;
 import com.wellu.usermanagement.service.ProfileService;
 import com.wellu.usermanagement.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +22,16 @@ public class ProfileController {
     private final UserService userService;
     private final ProfileService profileService;
     private final HealthProfileService healthProfileService;
+    private final ProfileOnboardingService profileOnboardingService;
 
-    public ProfileController(UserService userService, ProfileService profileService, HealthProfileService healthProfileService) {
+    public ProfileController(UserService userService,
+                             ProfileService profileService,
+                             HealthProfileService healthProfileService,
+                             ProfileOnboardingService profileOnboardingService) {
         this.userService = userService;
         this.profileService = profileService;
         this.healthProfileService = healthProfileService;
+        this.profileOnboardingService = profileOnboardingService;
     }
 
 
@@ -38,6 +46,14 @@ public class ProfileController {
     ) {
         return profileService.updateProfile(request);
     }
+
+    @PutMapping("/me/onboarding")
+    public ResponseEntity<CompleteProfileResponse> completeMyProfile(
+            @RequestBody CompleteProfileRequest request
+    ) {
+        return ResponseEntity.ok(profileOnboardingService.completeMyProfile(request));
+    }
+
     @GetMapping("/me/health")
     public ResponseEntity<HealthProfileResponseDto> getMyHealthProfile() {
         return ResponseEntity.ok(healthProfileService.getMyProfile());

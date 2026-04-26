@@ -1,11 +1,13 @@
 package com.wellu.usermanagement.service;
 
 import com.wellu.usermanagement.dto.request.UserRegisterRequest;
+import com.wellu.usermanagement.dto.response.UserProfileResponse;
 import com.wellu.usermanagement.dto.response.UserRegisterResponse;
 import com.wellu.usermanagement.entity.User;
 import com.wellu.usermanagement.entity.UserProfile;
 import com.wellu.usermanagement.exception.RegisterException;
 import com.wellu.usermanagement.mapper.UserMapper;
+import com.wellu.usermanagement.mapper.UserProfileMapper;
 import com.wellu.usermanagement.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +20,18 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
+    private final UserProfileMapper userProfileMapper;
 
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, UserMapper userMapper) {
+    public UserService(
+            UserRepository userRepository,
+            BCryptPasswordEncoder passwordEncoder,
+            UserMapper userMapper,
+            UserProfileMapper userProfileMapper
+    ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
+        this.userProfileMapper = userProfileMapper;
     }
 
     public ResponseEntity<UserRegisterResponse> register(UserRegisterRequest userRegisterRequest) {
@@ -52,8 +61,11 @@ public class UserService {
             throw new RegisterException("Email already exists");
         }
     }
-    public List<User> getAllUsers(){
-        return userRepository.findAll();
+    public List<UserProfileResponse> getAllUsers(){
+        return userRepository.findAll()
+                .stream()
+                .map(userProfileMapper::toResponse)
+                .toList();
     }
 }
 
