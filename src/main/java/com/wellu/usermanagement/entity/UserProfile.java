@@ -34,6 +34,15 @@ public class UserProfile {
     @Column
     private double BMI;
 
+    @Column
+    private String gender;
+
+    @Column(name = "fitness_level")
+    private String fitnessLevel;
+
+    @Column(name = "main_goal")
+    private String mainGoal;
+
     @OneToOne(mappedBy = "profile")
     private User user;
 
@@ -53,11 +62,30 @@ public class UserProfile {
     @OneToMany(mappedBy = "userProfile", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProgressEntry> progressEntries = new ArrayList<>();
 
+    @OneToOne(mappedBy = "userProfile", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Preference preference;
+
     protected void setUser(User user){
         this.user = user;
     }
+
+    public void setHealthProfile(HealthProfile healthProfile) {
+        this.healthProfile = healthProfile;
+        if (healthProfile != null) {
+            healthProfile.setUserProfile(this);
+        }
+    }
+
+    public void setPreference(Preference preference) {
+        this.preference = preference;
+        if (preference != null) {
+            preference.setUserProfile(this);
+        }
+    }
+
     public double calculateBMI(){
-        return weight / (height * height);
+        double heightInMeters = height > 3 ? height / 100.0 : height;
+        return heightInMeters > 0 ? weight / (heightInMeters * heightInMeters) : 0;
     }
 
 

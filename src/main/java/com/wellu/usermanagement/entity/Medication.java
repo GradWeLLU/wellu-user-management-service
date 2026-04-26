@@ -2,7 +2,6 @@ package com.wellu.usermanagement.entity;
 
 import com.wellu.usermanagement.enumeration.SeverityLevel;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,26 +24,27 @@ public class Medication {
     @Column(nullable = false, length = 100)
     private String name;
 
-    @Column(nullable = false)
-    @Positive
+    @Column(nullable = true)
     private Double dosage;
 
-    @Column(nullable = false)
-    @Positive
-    private int frequency;
+    @Column(nullable = true)
+    private Integer frequency;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Instant startDate;
 
     @Column(nullable = true)
     private Instant endDate;
+
+    @Column(nullable = true)
+    private String reason;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "health_profile_id", nullable = false)
     private HealthProfile healthProfile;
 
 
-    public Medication(String name, Double dosage, int frequency, Instant startDate, Instant endDate){
+    public Medication(String name, Double dosage, Integer frequency, Instant startDate, Instant endDate){
         this.name = name;
         this.dosage = dosage;
         this.frequency = frequency;

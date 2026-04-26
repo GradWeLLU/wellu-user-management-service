@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.UUID;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "preferences")
 public class Preference {
@@ -72,6 +74,10 @@ public class Preference {
     @Column(name = "cuisine")
     private List<String> preferredCuisines = new ArrayList<>();
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_profile_id")
+    private UserProfile userProfile;
+
     public void setPreferredWorkoutDuration(Integer duration){
         if(duration != null && duration < 5) throw new IllegalArgumentException(("Duration must be longer than 5 minutes!"));
         this.preferredWorkoutDuration = duration;
@@ -91,6 +97,10 @@ public class Preference {
     public void addDislikedFood(String food){
         if(!dislikedFoods.contains(food))
             dislikedFoods.add(food);
+    }
+
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
     }
 
 }

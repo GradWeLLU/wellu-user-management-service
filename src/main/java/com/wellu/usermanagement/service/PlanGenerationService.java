@@ -3,6 +3,7 @@ package com.wellu.usermanagement.service;
 import com.wellu.usermanagement.dto.response.NutritionPlanRequestDTO;
 import com.wellu.usermanagement.dto.response.WorkoutPlanRequestDTO;
 import com.wellu.usermanagement.entity.HealthProfile;
+import com.wellu.usermanagement.entity.Preference;
 import com.wellu.usermanagement.entity.User;
 import com.wellu.usermanagement.entity.UserProfile;
 import com.wellu.usermanagement.exception.UserNotFoundException;
@@ -23,6 +24,7 @@ public class PlanGenerationService {
         User user = getUserById(userId);
         UserProfile profile = user.getProfile();
         HealthProfile health = profile != null ? profile.getHealthProfile() : null;
+        Preference preference = profile != null ? profile.getPreference() : null;
 
         int age = profile != null ? profile.getAge() : 18;
         double weight = profile != null ? profile.getWeight() : 70;
@@ -32,10 +34,16 @@ public class PlanGenerationService {
                 : 20;
         String goal = extractGoal(profile);
         List<String> injuries = extractInjuries(health);
-        Integer sessionDuration = 60;
-        String preferredDifficultyLevel = "INTERMEDIATE";
+        Integer sessionDuration = preference != null && preference.getPreferredWorkoutDuration() != null
+                ? preference.getPreferredWorkoutDuration()
+                : 60;
+        String preferredDifficultyLevel = preference != null && preference.getPreferredDifficulty() != null
+                ? preference.getPreferredDifficulty().name()
+                : "INTERMEDIATE";
         List<String> preferredEquipment = List.of("bodyweight");
-        String experienceLevel = "BEGINNER";
+        String experienceLevel = profile != null && profile.getFitnessLevel() != null
+                ? profile.getFitnessLevel()
+                : "BEGINNER";
 
         WorkoutPlanRequestDTO details = new WorkoutPlanRequestDTO(
                 user.getId(),
@@ -56,15 +64,18 @@ public class PlanGenerationService {
     public ResponseEntity<NutritionPlanRequestDTO> buildNutritionPlanRequestDTO(UUID userId) {
         User user = getUserById(userId);
         UserProfile profile = user.getProfile();
+        Preference preference = profile != null ? profile.getPreference() : null;
 
         Integer age = profile != null ? profile.getAge() : 18;
         Double weight = profile != null ? profile.getWeight() : 70.0;
         Double height = profile != null ? profile.getHeight() : 170.0;
         String goal = extractGoal(profile);
-        String gender = "Not specified";
-        String activityLevel = "moderate";
+        String gender = profile != null && profile.getGender() != null ? profile.getGender() : "Not specified";
+        String activityLevel = profile != null && profile.getFitnessLevel() != null ? profile.getFitnessLevel() : "moderate";
         String budget = "moderate";
-        String diet = "balanced";
+        String diet = preference != null && !preference.getPreferredDietaryType().isEmpty()
+                ? formatDiet(preference.getPreferredDietaryType().getFirst())
+                : "balanced";
         int mealsPerDay = 3;
 
         NutritionPlanRequestDTO details = new NutritionPlanRequestDTO(
@@ -89,6 +100,10 @@ public class PlanGenerationService {
     }
 
     private String extractGoal(UserProfile profile) {
+        if (profile != null && profile.getMainGoal() != null && !profile.getMainGoal().isBlank()) {
+            return profile.getMainGoal();
+        }
+
         String goal = null;
         if (profile != null && profile.getGoals() != null && !profile.getGoals().isEmpty()) {
             goal = profile.getGoals().getFirst().getGoalType().toString();
@@ -105,6 +120,12 @@ public class PlanGenerationService {
                     .toList();
         }
         return injuries;
+    }
+
+    private String formatDiet(com.wellu.usermanagement.enumeration.DietaryType dietaryType) {
+        return dietaryType == com.wellu.usermanagement.enumeration.DietaryType.NONE
+                ? "balanced"
+                : dietaryType.name();
     }
 }
 
