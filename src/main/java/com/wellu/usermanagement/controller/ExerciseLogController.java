@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -22,6 +23,23 @@ public class ExerciseLogController {
 
     public ExerciseLogController(ExerciseLogService exerciseLogService) {
         this.exerciseLogService = exerciseLogService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ExerciseLogResponseDto>> getLogs(
+            @AuthenticationPrincipal CustomUserPrincipal principal
+    ) {
+        return ResponseEntity.ok(exerciseLogService.getLogs(principal.getUserId()));
+    }
+
+    @GetMapping("/{logId}")
+    public ResponseEntity<ExerciseLogResponseDto> getLog(
+            @PathVariable UUID logId,
+            @AuthenticationPrincipal CustomUserPrincipal principal
+    ) {
+        ExerciseLogResponseDto response = exerciseLogService.getLog(logId, principal.getUserId());
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping

@@ -17,7 +17,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,6 +29,22 @@ public class ExerciseLogService {
     private final ExerciseLogMapper exerciseLogMapper;
     private final ExerciseLogEntryMapper exerciseLogEntryMapper;
     private final UserRepository userRepository;
+
+    public List<ExerciseLogResponseDto> getLogs(UUID userId) {
+        return exerciseLogRepository.findByUser_Id(userId)
+                .stream()
+                .map(exerciseLogMapper::toDto)
+                .toList();
+    }
+
+    public ExerciseLogResponseDto getLog(UUID logId, UUID userId) {
+        ExerciseLog log = exerciseLogRepository
+                .findByIdAndUser_Id(logId, userId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Exercise log not found"));
+
+        return exerciseLogMapper.toDto(log);
+    }
 
     @Transactional
     public ExerciseLogResponseDto createLog(UUID userId,
@@ -59,6 +74,9 @@ public class ExerciseLogService {
                         new ResourceNotFoundException("Exercise log not found"));
 
         ExerciseLogEntry entry = exerciseLogEntryMapper.toEntity(entryDto);
+        if (entry.getSets() != null) {
+            entry.getSets().forEach(set -> set.setExerciseEntry(entry));
+        }
 
         log.addEntry(entry);
 
