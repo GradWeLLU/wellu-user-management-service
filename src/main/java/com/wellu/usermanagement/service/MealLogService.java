@@ -71,7 +71,7 @@ public class MealLogService {
         MealLogEntry entry = mealLogEntryMapper.toEntity(entryDto);
         log.addEntry(entry);
 
-        mealEntryRepository.save(entry);
+        mealLogRepository.save(log);
 
         return mealLogMapper.toDto(log);
     }
