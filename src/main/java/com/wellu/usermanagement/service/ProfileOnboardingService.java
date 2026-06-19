@@ -20,6 +20,7 @@ import com.wellu.usermanagement.enumeration.DifficultyLevel;
 import com.wellu.usermanagement.enumeration.SeverityLevel;
 import com.wellu.usermanagement.enumeration.TimePeriod;
 import com.wellu.usermanagement.exception.UserNotFoundException;
+import com.wellu.usermanagement.repository.PreferenceRepository;
 import com.wellu.usermanagement.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,7 @@ import java.util.UUID;
 public class ProfileOnboardingService {
 
     private final UserRepository userRepository;
+    private final PreferenceRepository preferenceRepository;
 
     @Transactional
     public CompleteProfileResponse completeMyProfile(CompleteProfileRequest request) {
@@ -51,7 +53,7 @@ public class ProfileOnboardingService {
         applyAllergyDetails(healthProfile, request.allergyDetails());
 
         userRepository.save(user);
-
+        preferenceRepository.save(preference);
         return buildResponse(profile, healthProfile, preference);
     }
 
