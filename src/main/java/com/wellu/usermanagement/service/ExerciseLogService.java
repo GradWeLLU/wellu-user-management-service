@@ -80,7 +80,7 @@ public class ExerciseLogService {
 
         log.addEntry(entry);
 
-        exerciseEntryRepository.save(entry);
+        exerciseLogRepository.save(log);
 
         return exerciseLogMapper.toDto(log);
     }
