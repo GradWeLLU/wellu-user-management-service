@@ -37,7 +37,6 @@ import java.util.UUID;
 public class ProfileOnboardingService {
 
     private final UserRepository userRepository;
-    private final PreferenceRepository preferenceRepository;
 
     @Transactional
     public CompleteProfileResponse completeMyProfile(CompleteProfileRequest request) {
@@ -53,7 +52,6 @@ public class ProfileOnboardingService {
         applyAllergyDetails(healthProfile, request.allergyDetails());
 
         userRepository.save(user);
-        preferenceRepository.save(preference);
         return buildResponse(profile, healthProfile, preference);
     }
 
