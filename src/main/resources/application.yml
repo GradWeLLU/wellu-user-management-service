@@ -1,23 +1,21 @@
 spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:userdb}:${DB_PORT:5432}/${DB_NAME:user_management}
+    username: ${DB_USERNAME:user}
+    password: ${DB_PASSWORD:password}
+    driver-class-name: org.postgresql.Driver
 
   flyway:
     enabled: true
 
-
-  #datasource:
-   # url: jdbc:postgresql://userdb:5432/user_management
-   # username: user
-   # password: password
-   # driver-class-name: org.postgresql.Driver
-
   jpa:
     hibernate:
       ddl-auto: validate
-    show-sql: true
+    show-sql: ${SHOW_SQL:false}
 
 server:
-  port: 8081
+  port: ${SERVER_PORT:8081}
 
 jwt:
   secret: ${JWT_SECRET}
-  expiration-ms: 3600000 # 1 hour
+  expiration-ms: ${JWT_EXPIRATION_MS:3600000}
