@@ -1,5 +1,6 @@
 package com.wellu.usermanagement.dto.response;
 
+import java.util.List;
 import java.util.UUID;
 
 public record NutritionPlanRequestDTO(
@@ -12,6 +13,8 @@ public record NutritionPlanRequestDTO(
         String activityLevel,
         String budget,
         String diet,
-        int mealsPerDay
+        int mealsPerDay,
+        List<String> medications,
+        List<String> allergies
 ) {
 }

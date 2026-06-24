@@ -64,6 +64,7 @@ public class PlanGenerationService {
     public ResponseEntity<NutritionPlanRequestDTO> buildNutritionPlanRequestDTO(UUID userId) {
         User user = getUserById(userId);
         UserProfile profile = user.getProfile();
+        HealthProfile health = profile != null ? profile.getHealthProfile() : null;
         Preference preference = profile != null ? profile.getPreference() : null;
 
         Integer age = profile != null ? profile.getAge() : 18;
@@ -77,6 +78,8 @@ public class PlanGenerationService {
                 ? formatDiet(preference.getPreferredDietaryType().getFirst())
                 : "balanced";
         int mealsPerDay = 3;
+        List<String> allergies = extractAllergies(health);
+        List<String> medications = extractMedications(health);
 
         NutritionPlanRequestDTO details = new NutritionPlanRequestDTO(
                 user.getId(),
@@ -88,7 +91,9 @@ public class PlanGenerationService {
                 activityLevel,
                 budget,
                 diet,
-                mealsPerDay
+                mealsPerDay,
+                medications,
+                allergies
         );
         return ResponseEntity.ok(details);
     }
@@ -120,6 +125,28 @@ public class PlanGenerationService {
                     .toList();
         }
         return injuries;
+    }
+
+    private List<String> extractAllergies(HealthProfile health) {
+        List<String> allergies = List.of();
+        if (health != null && health.getAllergies() != null) {
+            allergies = health.getAllergies()
+                    .stream()
+                    .map(allergy -> allergy.getName())
+                    .toList();
+        }
+        return allergies;
+    }
+
+    private List<String> extractMedications(HealthProfile health) {
+        List<String> medications = List.of();
+        if (health != null && health.getMedications() != null) {
+            medications = health.getMedications()
+                    .stream()
+                    .map(medication -> medication.getName())
+                    .toList();
+        }
+        return medications;
     }
 
     private String formatDiet(com.wellu.usermanagement.enumeration.DietaryType dietaryType) {
