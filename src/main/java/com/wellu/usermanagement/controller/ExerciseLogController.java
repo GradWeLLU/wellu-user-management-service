@@ -6,6 +6,7 @@ import com.wellu.usermanagement.dto.response.ExerciseLogResponseDto;
 import com.wellu.usermanagement.security.CustomUserPrincipal;
 import com.wellu.usermanagement.service.ExerciseLogService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +41,15 @@ public class ExerciseLogController {
         ExerciseLogResponseDto response = exerciseLogService.getLog(logId, principal.getUserId());
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/range")
+    public ResponseEntity<List<ExerciseLogResponseDto>> getLogsForLastDays(
+            @AuthenticationPrincipal CustomUserPrincipal principal,
+            @RequestParam @Min(value = 1, message = "days must be at least 1") int days) {
+
+        List<ExerciseLogResponseDto> logs = exerciseLogService.getLogsForLastDays(principal.getUserId(), days);
+        return ResponseEntity.ok(logs);
     }
 
     @PostMapping

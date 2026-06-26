@@ -17,6 +17,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -109,5 +110,16 @@ public class ExerciseLogService {
         log.getEntries().remove(entry);
 
         exerciseEntryRepository.delete(entry);
+    }
+
+    public List<ExerciseLogResponseDto> getLogsForLastDays(UUID userId, int days) {
+        LocalDate endDate = LocalDate.now();
+        LocalDate startDate = endDate.minusDays(days);
+
+        return exerciseLogRepository
+                .findByUser_IdAndWorkoutDateBetween(userId, startDate, endDate)
+                .stream()
+                .map(exerciseLogMapper::toDto)
+                .toList();
     }
 }

@@ -17,6 +17,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -102,4 +103,16 @@ public class MealLogService {
 
         mealEntryRepository.delete(entry);
     }
+
+    public List<MealLogResponseDto> getLogsForLastDays(UUID userId, int days) {
+        LocalDate endDate = LocalDate.now();
+        LocalDate startDate = endDate.minusDays(days);
+
+        return mealLogRepository
+                .findByUser_IdAndMealDateBetween(userId, startDate, endDate)
+                .stream()
+                .map(mealLogMapper::toDto)
+                .toList();
+    }
+
 }
